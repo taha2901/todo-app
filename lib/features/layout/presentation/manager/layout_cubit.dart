@@ -2,22 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:open_file/open_file.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo/features/archieve/archieve.dart';
 import 'package:todo/features/done/done.dart';
-import 'package:todo/features/home/home.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:csv/csv.dart';
+import 'package:todo/features/home/ui/home.dart';
 part 'layout_state.dart';
 
 class LayoutCubit extends Cubit<LayoutState> {
   static LayoutCubit get(context) => BlocProvider.of(context);
-
-  Locale _locale = const Locale('en'); // اللغة الافتراضية الإنجليزية
-
-  Locale get locale => _locale;
 
   late final List<Widget> screens;
   List<Map> tasks = [];
@@ -38,11 +30,6 @@ class LayoutCubit extends Cubit<LayoutState> {
   void changeBottomNavBar(int index) {
     currentIndex = index;
     emit(LayoutChangeBottomNavBarState());
-  }
-
-  void changeLanguage(String languageCode) {
-    _locale = Locale(languageCode);
-    emit(LayoutChangeLanguageState());
   }
 
   List<String> titles = [
@@ -137,9 +124,20 @@ class LayoutCubit extends Cubit<LayoutState> {
     });
   }
 
+  // void toggleTheme() {
+  //   isDark = !isDark; // تبديل حالة الوضع
+  //   emit(LayoutChangeThemeState()); // أرسل حالة جديدة لتحديث الواجهة
+  // }
+
+ 
+
   void toggleTheme() {
-    isDark = !isDark; // تبديل حالة الوضع
-    emit(LayoutChangeThemeState()); // أرسل حالة جديدة لتحديث الواجهة
+    isDark = !isDark;
+    emit(LayoutChangeThemeState());
+  }
+
+  ThemeData getTheme() {
+    return isDark ? ThemeData.dark() : ThemeData.light();
   }
 
   Future<List<Map>> searchTasks(String query) async {
@@ -165,10 +163,9 @@ class LayoutCubit extends Cubit<LayoutState> {
   }
 
   void deleteDataById({required int id}) {
-  database?.rawDelete('DELETE FROM tasks WHERE id = ?', [id]).then((value) {
-    emit(AppDeleteDatabaseState());
-    getDataFromDatabase(database!); // إعادة تحميل البيانات بعد الحذف
-  });
-}
-
+    database?.rawDelete('DELETE FROM tasks WHERE id = ?', [id]).then((value) {
+      emit(AppDeleteDatabaseState());
+      getDataFromDatabase(database!); // إعادة تحميل البيانات بعد الحذف
+    });
+  }
 }

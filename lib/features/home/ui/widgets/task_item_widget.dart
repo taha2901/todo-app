@@ -1,45 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:todo/features/layout/presentation/manager/layout_cubit.dart';
 import 'package:todo/features/layout/presentation/view/edit_task_sheet.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<LayoutCubit, LayoutState>(
-      listener: (context, state) {
-        if (state is AppInsertDatabaseState) {
-          Navigator.pop(context);
-        }
-      },
-      builder: (context, state) {
-        var tasks = LayoutCubit.get(context).tasks;
-        return tasks.isEmpty
-            ? const Center(child: Text('No tasks yet!'))
-            : ListView.separated(
-                itemBuilder: (context, index) {
-                  return BuildTaskItem(
-                    tasks: tasks[index],
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: tasks.length,
-              );
-      },
-    );
-  }
-}
-
-class BuildTaskItem extends StatelessWidget {
+class TaskItemWidget extends StatelessWidget {
   final Map tasks;
 
-  const BuildTaskItem({super.key, required this.tasks});
+  const TaskItemWidget({super.key, required this.tasks});
 
   @override
   Widget build(BuildContext context) {
@@ -155,10 +122,7 @@ class BuildTaskItem extends StatelessWidget {
             color: Colors.green,
           ),
           IconButton(
-            onPressed: () {
-              // LayoutCubit.get(context)
-              //     .updateData(status: 'share', id: tasks['id']);
-            },
+            onPressed: () {},
             icon: const Icon(Icons.archive),
             color: Colors.grey,
           ),
@@ -171,62 +135,5 @@ class BuildTaskItem extends StatelessWidget {
     final taskDetails =
         'Task: ${tasks['title']}\nDate: ${tasks['date']}\nTime: ${tasks['time']}';
     Share.share(taskDetails);
-  }
-}
-
-
-
-
-
-class TaskSearchDelegate extends SearchDelegate {
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = ''; // إعادة تعيين الاستعلام عند الضغط على زر المسح
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // يمكن تنفيذ البحث هنا
-    final cubit = LayoutCubit.get(context);
-    return FutureBuilder<List<Map>>(
-      future: cubit.searchTasks(query), // استدعاء وظيفة البحث
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              return BuildTaskItem(tasks: snapshot.data![index]);
-            },
-          );
-        } else {
-          return const Center(child: Text('No tasks found'));
-        }
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // يمكن تقديم الاقتراحات هنا إذا كنت ترغب في ذلك
-    return Container(); // أو أي شيء آخر تراه مناسبًا
   }
 }

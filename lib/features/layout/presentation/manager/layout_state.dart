@@ -17,4 +17,3 @@ class AppDeleteDatabaseState extends LayoutState {}
 
 class LayoutChangeThemeState extends LayoutState {}
 
-class LayoutChangeLanguageState extends LayoutState {}

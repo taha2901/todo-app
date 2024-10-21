@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/core/bloc_observer.dart';
+import 'package:todo/core/helpers/bloc_observer.dart';
 import 'package:todo/features/layout/presentation/manager/layout_cubit.dart';
 import 'package:todo/features/layout/presentation/view/glocu_layout.dart';
 
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LayoutCubit()..createDatabase(),
-      child: const MaterialApp(
+      child:  const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         home: GlucoLayout(),
