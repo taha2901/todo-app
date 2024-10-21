@@ -13,6 +13,8 @@ Welcome to the **Todo App**, a simple and efficient task management application 
 ## 🛠️ Architecture
 
 The app is built using a **clean architecture** pattern, ensuring that the code is modular, maintainable, and easy to scale. Following clean code principles, the project structure is organized for better readability and flexibility.
+![mn3q553g](https://github.com/user-attachments/assets/2a843f11-8c7d-4a78-afd6-640872e50d8f)
+
 
 ## 🚀 Getting Started
 
