@@ -9,11 +9,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LayoutCubit, LayoutState>(
-      listener: (context, state) {
-        if (state is AppInsertDatabaseState) {
-          Navigator.pop(context);
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var tasks = LayoutCubit.get(context).tasks;
         return Scaffold(
